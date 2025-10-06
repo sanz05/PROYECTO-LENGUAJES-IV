@@ -6,6 +6,8 @@ function App() {
   return (
     <>
       <h1>HOLIS</h1>
+      <h2>Hotel California</h2>
+      <h3>Misterioso lugar</h3>
     </>
   )
 }
