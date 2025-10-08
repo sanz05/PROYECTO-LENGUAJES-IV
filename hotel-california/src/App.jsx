@@ -4,6 +4,7 @@ import Home from "./Pages/Home";
 import Servicio from "./Pages/Servicio";
 import Reservas from "./Pages/Reservas";
 import SobreNosotros from "./Pages/Sobre_nosotros";
+import Login from "./Pages/Login";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/servicios" element={<Servicio />} />
         <Route path="/reservas" element={<Reservas />} />
         <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );
