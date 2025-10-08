@@ -1,20 +1,89 @@
-.sobre-nosotros-container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 32px;
-  background: #f8f8f8;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  text-align: center;
+.sobre-container {
+  background-color: #0d0106; /* Licorice */
+  color: #cdd1c4; /* Ash gray */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 120px 2rem 60px; /* espacio para el navbar fijo */
 }
 
-.sobre-nosotros-container h1 {
-  color: #2c3e50;
-  margin-bottom: 16px;
+.sobre-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+  gap: 2rem;
 }
 
-.sobre-nosotros-container p {
-  color: #444;
+.texto {
+  flex: 1 1 500px;
+}
+
+.texto h2 {
+  font-size: 2.5rem;
+  color: #f5f5f5;
+  margin-bottom: 1rem;
+}
+
+.texto p {
   font-size: 1.1rem;
-  margin-bottom: 12px;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #cdd1c4;
+}
+
+.texto strong {
+  color: #9f7833; /* Golden brown */
+}
+
+.texto button {
+  background-color: #9f7833;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.texto button:hover {
+  background-color: #af7595; /* Mountbatten pink */
+}
+
+.imagen {
+  flex: 1 1 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imagen img {
+  width: 100%;
+  max-width: 550px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sobre-content {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .texto {
+    padding: 1rem;
+  }
+
+  .texto h2 {
+    font-size: 2rem;
+  }
+
+  .imagen img {
+    max-width: 90%;
+  }
 }
