@@ -76,6 +76,12 @@ export default function Sobre_nosotros() {
           <a href="https://wa.me/543875821274" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
       </div>
+
+      {/* ==== FOOTER ==== */}
+      <footer className="footerss">
+        <p>© 2025 Hotel California. Todos los derechos reservados.</p>
+        <p>Santa Cruz, California — Estados Unidos</p>
+      </footer>
     </div>
   );
 }

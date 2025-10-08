@@ -178,6 +178,7 @@
   }
 }
 /* ===== SECCIÓN CONTACTO ===== */
+
 .contact-section {
   justify-content: space-between;
   width: 100%;
@@ -231,4 +232,14 @@
 
 .social-links span {
   color: rgba(255, 255, 255, 0.3);
+}
+.footerss {
+  background-color: #0d0106;
+  color: #cdd1c4;
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid #9f7833;
+  max-width: 1300px;
+  width: 200vw;
+  margin-left: calc(50% - 46w);
 }
