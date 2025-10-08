@@ -1,12 +1,10 @@
+import React from "react";
 
-/* Componente de Inicio */
-function Home() {
+export default function Home() {
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>Home</h1>
-      <h2>Cargador de Imagen </h2>
-      <ImageUploader />
+    <div>
+      <h1>Bienvenido al Hotel California</h1>
+      <p>Disfruta de tu estancia.</p>
     </div>
   );
 }
-export default Home;
