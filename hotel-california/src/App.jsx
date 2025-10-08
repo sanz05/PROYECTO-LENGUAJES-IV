@@ -6,20 +6,8 @@ import Contacto from "./Pages/contacto";
 import Servicios from "./Pages/servicios";
 import Home from "./Pages/home";
 
-export default function App() {
+function App() {
   return (
-<<<<<<< Updated upstream
-    <>
-      <h1></h1>
-      <h1>HOLIS</h1>
-      <h2>Hotel California</h2>
-      <h3>Misterioso lugar</h3>
-    </>
-  )
-}
-
-export default App;
-=======
     <Router>
       {/* Menú de navegación */}
       <nav style={{ display: "flex", gap: "1rem" }}>
@@ -37,4 +25,4 @@ export default App;
     </Router>
   );
 }
->>>>>>> Stashed changes
+export default App;
