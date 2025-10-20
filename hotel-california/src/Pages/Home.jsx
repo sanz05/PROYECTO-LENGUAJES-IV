@@ -1,13 +1,14 @@
 import React from "react";
 import "../Styles/Home.css";
 import hotelBg from "../assets/hotelbg.png";
-import habit1 from "../assets/deluxe.png";
-import habit2 from "../assets/ejecutiva.png";
-import habit3 from "../assets/presidencial.png";
 import Clima from "../components/Clima/Clima";
+import CircularGallery from "../components/Galeria/CircularGallery";
+import Transicion from "../components/Transiciones";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
+    <Transicion>
     <>
       {/* ===== HERO SECTION ===== */}
       <section
@@ -19,8 +20,9 @@ export default function Home() {
           <h1>Bienvenido al Hotel California</h1>
           <p>Donde el lujo, el confort y la calidez se encuentran.</p>
 
-
-          <button>Reservar ahora</button>
+        <Link to="/reservas">
+          <button >Reservar ahora</button>
+        </Link>
         </div>
       </section>
 
@@ -32,35 +34,21 @@ export default function Home() {
           Más allá de la estancia, te espera la magia del clima de Santa Cruz, que acompaña  
           tus días y noches con la misma calidez que nuestro servicio.
         </p>
+        <div style={{ height: '600px', position: 'relative' }}>
+          <CircularGallery bend={3} textColor="#ffffff" borderRadius={0.05} scrollEase={0.02}/>
+        </div>
+        <p className="clima-titulo">Donde el clima acompaña tus momentos, nuestros huespedes disfrutan actualmente: </p>
         <Clima />
+
       </section>
 
-      {/* ===== SECCIÓN HABITACIONES ===== */}
-      <section className="habitaciones">
-        <h2>Nuestras Habitaciones</h2>
-        <div className="cards">
-          <div className="card">
-            <img src={habit1} alt="Suite Deluxe" />
-            <h3>Suite Deluxe</h3>
-            <p>Amplia, luminosa y con vistas al jardín.</p>
-          </div>
-          <div className="card">
-            <img src={habit2} alt="Suite Ejecutiva" />
-            <h3>Suite Ejecutiva</h3>
-            <p>Diseñada para el confort y el descanso absoluto.</p>
-          </div>
-          <div className="card">
-            <img src={habit3} alt="Suite Presidencial" />
-            <h3>Suite Presidencial</h3>
-            <p>Lujo sin límites, con terraza privada y jacuzzi.</p>
-          </div>
-        </div>
-      </section>
 
       {/* ===== CTA ===== */}
       <section className="cta">
         <h2>¿Listo para tu próxima escapada?</h2>
-        <button>Reservar ahora</button>
+        <Link to="/reservas">
+          <button >Reservar ahora</button>
+        </Link>
       </section>
 
       {/* ===== FOOTER ===== */}
@@ -69,5 +57,6 @@ export default function Home() {
         <p>Santa Cruz, California — Estados Unidos</p>
       </footer>
     </>
+    </Transicion>
   );
 }

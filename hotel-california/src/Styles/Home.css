@@ -178,3 +178,13 @@
     width: 90%;
   }
 }
+
+.clima-titulo {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #dcbf72;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}

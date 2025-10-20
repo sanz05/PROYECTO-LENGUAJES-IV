@@ -1,0 +1,113 @@
+.reservas-container {
+  padding: 2rem;
+  color: #d6a950;
+  text-align: center;
+  margin-top: 70px;
+  
+}
+
+.reservas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn-volver {
+  background-color: transparent;
+  border: 2px solid #d6a950;
+  color: #d6a950;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-volver:hover {
+  background-color: #d6a950;
+  color: #121212;
+}
+
+.reservas-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.reservas-tabla th,
+.reservas-tabla td {
+  border: 1px solid #d6a950;
+  padding: 0.6rem;
+}
+
+.reservas-tabla th {
+  background-color: #1f1f1f;
+  text-transform: uppercase;
+}
+
+.reservas-tabla tr:nth-child(even) {
+  background-color: #222;
+}
+
+.estado.pendiente {
+  color: #f1c40f;
+}
+
+.estado.confirmada {
+  color: #2ecc71;
+}
+
+.estado.cancelada {
+  color: #e74c3c;
+}
+
+.btn {
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-weight: 600;
+  margin: 0 0.2rem;
+  transition: 0.2s ease;
+}
+
+.btn.confirmar {
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+.btn.liberar {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.btn.confirmar:hover,
+.btn.liberar:hover {
+  opacity: 0.8;
+}
+
+.btn.liberar {
+  background-color: #e74c3c;
+  color: #fff;
+}
+.btn.liberar:hover {
+  background-color: #c0392b;
+}
+
+.btn.eliminar {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.btn.eliminar:hover {
+  background-color: #777;
+}
+

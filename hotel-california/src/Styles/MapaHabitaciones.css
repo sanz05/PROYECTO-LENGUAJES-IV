@@ -1,0 +1,111 @@
+.mapa-container {
+  text-align: center;
+  padding: 2rem;
+  color: #d6a950;
+  margin-top: 75px;
+}
+
+.leyenda {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.cuadro {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+
+.cuadro.disponible {
+  background-color: #2ecc71;
+}
+.cuadro.ocupada {
+  background-color: #e74c3c;
+}
+
+
+.grupo-tipo {
+  margin-bottom: 2rem;
+}
+
+.grupo-tipo h3 {
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #f5d77c;
+  font-size: 1.2rem;
+}
+
+.fila-habitaciones {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.habitacion {
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+  transition: transform 0.2s ease;
+}
+
+.habitacion.disponible {
+  background-color: #2ecc71;
+}
+.habitacion.ocupada {
+  background-color: #e74c3c;
+}
+.habitacion.mantenimiento {
+  background-color: #f1c40f;
+}
+
+.habitacion:hover {
+  transform: scale(1.08);
+}
+
+@media (max-width: 600px) {
+  .habitacion {
+    width: 80px;
+    height: 80px;
+    font-size: 1rem;
+  }
+}
+
+.mapa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn-volver {
+  background-color: transparent;
+  border: 2px solid #d6a950;
+  color: #d6a950;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-volver:hover {
+  background-color: #d6a950;
+  color: #121212;
+}
+
+.cuadro.mantenimiento {
+  background-color: #f1c40f;
+}

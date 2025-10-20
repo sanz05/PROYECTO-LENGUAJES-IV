@@ -85,3 +85,59 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
+
+
+.nombre{
+  margin-top: 5px;
+  text-align: center;
+}
+
+.nav-li{
+  margin-top: 20px ;
+}
+
+.usuario-menu {
+  position: relative;
+  cursor: pointer;
+}
+
+.usuario-nombre {
+  color: #d6a950;
+  font-weight: 600;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  background-color: #121212;
+  border: 1px solid #d6a950;
+  border-radius: 6px;
+  padding: 0.5rem 0;
+  list-style: none;
+  z-index: 100;
+}
+
+.dropdown-menu li {
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-menu li:hover {
+  background-color: #222;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  color: #d6a950;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.dash{
+  text-align: center;
+  margin-left: 8px;
+}

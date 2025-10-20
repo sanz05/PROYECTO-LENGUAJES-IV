@@ -2,9 +2,11 @@ import React from "react";
 import "../Styles/Sobre_nosotros.css";
 import lobbyImg from "../assets/lobby.png";
 import sunsetImg from "../assets/sunset.png";
+import Transicion from "../components/Transiciones";
 
 export default function Sobre_nosotros() {
   return (
+    <Transicion>
     <div className="sobre-container">
       <div className="sobre-content">
         <div className="texto">
@@ -83,5 +85,7 @@ export default function Sobre_nosotros() {
         <p>Santa Cruz, California — Estados Unidos</p>
       </footer>
     </div>
+    </Transicion>
   );
+  
 }

@@ -1,5 +1,5 @@
 .reservas-pro {
-  background-image: url("../assets/playa-bg-dorado.jpg");
+  background-image: url("../assets/playa-bg.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -21,6 +21,7 @@
 }
 
 .reservas-pro h2 {
+  margin-top: 125px;
   color: #9f7833;
   font-size: 2.8rem;
   margin-bottom: 3rem;
@@ -149,17 +150,33 @@
 }
 
 /* ======== FLECHAS Y DOTS DORADOS ======== */
+.slick-prev,
+.slick-next {
+  position: absolute !important;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.slick-prev {
+  left: 10px !important;
+}
+
+.slick-next {
+  right: 10px !important;
+}
+
 .slick-prev:before,
 .slick-next:before {
   color: #9f7833;
   font-size: 26px;
+  opacity: 0.9;
+  transition: color 0.3s ease;
 }
 
-.slick-prev {
-  left: -8px;
-}
-.slick-next {
-  right: -8px;
+.slick-prev:hover:before,
+.slick-next:hover:before {
+  color: #af7595;
 }
 
 .slick-dots li button:before {
@@ -265,4 +282,35 @@
   .detalle-info {
     text-align: center;
   }
+}
+
+
+.precio{
+  color: #fff;
+  font-weight: 800;
+}
+
+.sin-disponibles {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #d6a950;
+  background-color: #1a1a1a;
+  padding: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #d6a95044;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-no-disponible {
+  width: 100%;
+  background-color: #444;
+  color: #aaa;
+  cursor: not-allowed;
+  border: 1px solid #555;
+  font-weight: 600;
+  padding: 0.6rem;
+  border-radius: 6px;
 }

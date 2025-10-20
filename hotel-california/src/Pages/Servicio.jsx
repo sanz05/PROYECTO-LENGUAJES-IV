@@ -4,9 +4,11 @@ import restaurante from "../assets/restaurante.png";
 import acusticas from "../assets/noche.png";
 import bicicletas from "../assets/bicicleta.png";
 import yoga from "../assets/yoga.png";
+import Transicion from "../components/Transiciones";
 
 export default function Servicio() {
   return (
+    <Transicion>
     <>
       {/* ===== SECCIÓN PRINCIPAL ===== */}
       <section className="servicios-hero">
@@ -59,5 +61,6 @@ export default function Servicio() {
         <p>Santa Cruz, California — Estados Unidos</p>
       </footer>
     </>
+    </Transicion>
   );
 }

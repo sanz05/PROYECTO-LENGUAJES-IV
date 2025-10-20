@@ -1,0 +1,134 @@
+.registro-container {
+  background: linear-gradient(160deg, #0d0106, #1a1423);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cdd1c4;
+  padding: 2rem;
+  margin-top: 40px;
+}
+
+/* CAJA PRINCIPAL */
+.registro-box {
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(159, 120, 51, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+  border-radius: 14px;
+  padding: 2.8rem 3rem;
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.registro-box:hover {
+  box-shadow: 0 10px 35px rgba(159, 120, 51, 0.15);
+  transform: translateY(-3px);
+}
+
+/* TÍTULO */
+.registro-box h2 {
+  color: #d6a950;
+  margin-bottom: 0.5rem;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.registro-subtext {
+  color: #cdd1c4;
+  font-size: 0.9rem;
+  margin-bottom: 1.8rem;
+  line-height: 1.4;
+}
+
+/* FORMULARIO */
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.registro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* LABELS & INPUTS */
+label {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #e8e3d5;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color: #a8a8a8;
+}
+
+input:focus {
+  outline: none;
+  border-color: #9f7833;
+  box-shadow: 0 0 10px rgba(159, 120, 51, 0.35);
+}
+
+/* BOTÓN */
+.btn-registrar {
+  background: linear-gradient(90deg, #9f7833, #b88a32);
+  color: #fff;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 15px rgba(159, 120, 51, 0.25);
+}
+
+.btn-registrar:hover {
+  background: linear-gradient(90deg, #b88a32, #af7595);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(175, 117, 149, 0.3);
+}
+
+/* MENSAJE DE VALIDACIÓN */
+.registro-mensaje {
+  color: #ffd77a;
+  font-size: 0.9rem;
+  margin: 0.6rem 0;
+}
+
+/* FOOTER */
+.registro-footer {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #cdd1c4;
+}
+
+.registro-footer a {
+  color: #d6a950;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.registro-footer a:hover {
+  color: #af7595;
+  text-decoration: underline;
+}

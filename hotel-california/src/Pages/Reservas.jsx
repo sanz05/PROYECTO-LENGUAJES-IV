@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { FaWifi, FaCoffee, FaTv, FaUmbrellaBeach } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/Reservas.css";
-import Simple from "../assets/simple.png";
-import Doble from "../assets/Dobles.png";
-import Deluxe from "../assets/Deluxe.png";
-import Presidencial from "../assets/Presidencial.png";
-import Ejecutiva from "../assets/Ejecutiva.png";
+import { habitacionesData } from "../datos/habitacioness";
+import DetalleHabitacion from "../components/DetalleHabitacion"; 
+import ModalReserva from "../components/ModalReservas/ModalReservas";
+import Transicion from "../components/Transiciones";
+import { supabase } from "../../sv/supabaseClient";
 
 export default function Reservas() {
+  const [habitacionesDB, setHabitacionesDB] = useState([]); // 🧩 desde Supabase
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,66 +21,59 @@ export default function Reservas() {
   });
   const [confirmacion, setConfirmacion] = useState("");
 
-  const isLoggedIn = false; // Simula login
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const isLoggedIn = !!usuario;
 
-  const habitaciones = [
-    {
-      id: 1,
-      nombre: "Simple",
-      descripcion: "Habitación cómoda para una persona, baño privado y TV.",
-      detalles:
-        "Ideal para viajeros solos, cuenta con una cama individual, baño privado, escritorio y TV LED. Servicio de limpieza diario y desayuno incluido.",
-      precio: 80,
-      imagenes: [
-        Simple,
-        Deluxe,
-        Ejecutiva,
-      ],
-      servicios: [<FaWifi />, <FaTv />],
-    },
-    {
-      id: 2,
-      nombre: "Doble",
-      descripcion: "Espaciosa y luminosa, ideal para dos personas.",
-      detalles:
-        "Perfecta para parejas o amigos, con dos camas, minibar y TV. Incluye desayuno continental y acceso al gimnasio.",
-      precio: 120,
-      imagenes: [
-        "/images/doble1.jpg",
-        "/images/doble2.jpg",
-        "/images/doble3.jpg",
-      ],
-      servicios: [<FaWifi />, <FaCoffee />, <FaTv />],
-    },
-    {
-      id: 3,
-      nombre: "Deluxe",
-      descripcion: "Incluye balcón, minibar y vista al mar.",
-      detalles:
-        "Experiencia premium con balcón privado, vista panorámica al mar, minibar, y servicio de habitaciones 24hs.",
-      precio: 180,
-      imagenes: [
-        "/images/deluxe1.jpg",
-        "/images/deluxe2.jpg",
-        "/images/deluxe3.jpg",
-      ],
-      servicios: [<FaWifi />, <FaCoffee />, <FaUmbrellaBeach />, <FaTv />],
-    },
-    {
-      id: 4,
-      nombre: "Presidencial",
-      descripcion: "Incluye balcón, minibar y vista al mar.",
-      detalles:
-        "Experiencia premium con balcón privado, vista panorámica al mar, minibar, y servicio de habitaciones 24hs.",
-      precio: 180,
-      imagenes: [
-        Presidencial,
-        "/images/deluxe2.jpg",
-        "/images/deluxe3.jpg",
-      ],
-      servicios: [<FaWifi />, <FaCoffee />, <FaUmbrellaBeach />, <FaTv />],
-    },
-  ];
+  // 🧭 Traer habitaciones reales desde Supabase
+  useEffect(() => {
+  const fetchHabitaciones = async () => {
+    try {
+      const hoy = new Date().toISOString().split("T")[0];
+
+      // 🔹 1. Traer todas las habitaciones
+      const { data: habitaciones, error: errorHab } = await supabase
+        .from("habitaciones")
+        .select("*");
+
+      if (errorHab) throw errorHab;
+
+      // 🔹 2. Traer reservas confirmadas cuya fecha_fin sea >= hoy
+      const { data: reservas, error: errorRes } = await supabase
+        .from("reservas")
+        .select("id_habitacion, fecha_inicio, fecha_fin, estado")
+        .eq("estado", "confirmada")
+        .gte("fecha_fin", hoy);
+
+      if (errorRes) throw errorRes;
+
+      // 🔹 3. Filtrar las reservas que están activas hoy
+      const habitacionesOcupadasHoy = reservas
+        .filter(r => hoy >= r.fecha_inicio && hoy <= r.fecha_fin)
+        .map(r => r.id_habitacion);
+
+      // 🔹 4. Actualizar el estado visualmente
+      const habitacionesConEstado = habitaciones.map(h => ({
+        ...h,
+        estado: habitacionesOcupadasHoy.includes(h.id_habitacion)
+          ? "ocupada"
+          : "disponible",
+      }));
+
+      setHabitacionesDB(habitacionesConEstado);
+    } catch (error) {
+      console.error("Error al traer habitaciones:", error.message);
+    }
+  };
+
+  fetchHabitaciones();
+}, []);
+
+
+  // 📊 Chequear disponibilidad por tipo
+  const estaDisponible = (tipo) => {
+    const delTipo = habitacionesDB.filter((h) => h.tipo === tipo);
+    return delTipo.some((h) => h.estado === "disponible");
+  };
 
   const handleSaberMas = (room) => setSelectedRoom(room);
   const handleCerrarDetalle = () => setSelectedRoom(null);
@@ -104,162 +97,152 @@ export default function Reservas() {
     return diff > 0 ? diff : 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const noches = calcularNoches();
-    if (!noches || !formData.nombre || !formData.email) {
+    const hoy = new Date().setHours(0, 0, 0, 0);
+    const entrada = new Date(formData.fechaEntrada).setHours(0, 0, 0, 0);
+    const salida = new Date(formData.fechaSalida).setHours(0, 0, 0, 0);
+
+    if (!noches || !formData.fechaEntrada || !formData.fechaSalida) {
       setConfirmacion("⚠️ Completa todos los campos correctamente.");
       return;
     }
-    const total = noches * selectedRoom.precio;
-    setConfirmacion(
-      `✅ ¡Gracias ${formData.nombre}! Has reservado la habitación ${selectedRoom.nombre} por ${noches} noche(s). Total: $${total}.`
-    );
-    setFormData({ fechaEntrada: "", fechaSalida: "", nombre: "", email: "" });
-    setShowModal(false);
-  };
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
+    if (!usuario) {
+      setConfirmacion("⚠️ Tenés que iniciar sesión para reservar.");
+      return;
+    }
+
+    // 🚫 Validación de fechas inválidas
+
+
+    if (entrada < hoy) {
+      setConfirmacion("⚠️ La fecha de entrada no puede ser anterior a hoy.");
+      return;
+    }
+
+    if (salida <= entrada) {
+      setConfirmacion("⚠️ La fecha de salida debe ser posterior a la de entrada.");
+      return;
+    }
+
+
+    try {
+      const total = noches * selectedRoom.precio;
+
+      // Obtener una habitación libre de ese tipo
+      const habDisponible = habitacionesDB.find(
+        (h) => h.tipo === selectedRoom.nombre && h.estado === "disponible"
+      );
+
+      if (!habDisponible) {
+        setConfirmacion("❌ No hay habitaciones disponibles de este tipo.");
+        return;
+      }
+
+      // Crear reserva
+      const { error: reservaError } = await supabase.from("reservas").insert([
+        {
+          id_usuario: usuario.id_usuario,
+          id_habitacion: habDisponible.id_habitacion,
+          fecha_inicio: formData.fechaEntrada,
+          fecha_fin: formData.fechaSalida,
+          total: total,
+          estado: "pendiente",
+          metodo_pago: "efectivo",
+        },
+      ]);
+
+      if (reservaError) throw reservaError;
+
+      // Actualizar estado en la BD
+      await supabase
+        .from("habitaciones")
+        .update({ estado: "ocupada" })
+        .eq("id_habitacion", habDisponible.id_habitacion);
+
+      setConfirmacion(
+        `✅ ¡Gracias ${usuario.nombre}! Has reservado una habitación ${selectedRoom.nombre} por ${noches} noche(s). Total: $${total}.`
+      );
+
+      setTimeout(() => {
+      setShowModal(false);
+      setConfirmacion("");
+      window.location.href = "/";
+      }, 2500);
+    } catch (error) {
+      console.error(error.message);
+      setConfirmacion(`❌ Error: ${error.message}`);
+    }
   };
 
   return (
-    <div className="reservas-pro">
-      <h2>Nuestras Habitaciones</h2>
+    <Transicion>
+      <div className="reservas-pro">
+        <div className="overlay">
+          <h2>Nuestras Habitaciones</h2>
 
-      {/* ===== GRID DE CARDS ===== */}
-      {!selectedRoom && (
-        <div className="cards-pro">
-          {habitaciones.map((hab) => (
-            <div key={hab.id} className="card-pro">
-              <div className="image-container">
-                <img src={hab.imagenes[0]} alt={hab.nombre} />
-                <div className="servicios-overlay">
-                  {hab.servicios.map((s, i) => (
-                    <span key={i}>{s}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="card-content">
-                <h3>{hab.nombre}</h3>
-                <p>{hab.descripcion}</p>
-                <p className="precio">${hab.precio} / noche</p>
-                <button onClick={() => handleSaberMas(hab)}>Saber más</button>
-              </div>
+          {/* ===== GRID DE CARDS ===== */}
+          {!selectedRoom && (
+            <div className="cards-pro">
+              {habitacionesData.map((hab) => {
+                const disponible = estaDisponible(hab.nombre); // check por tipo
+
+                return (
+                  <div key={hab.id} className="card-pro">
+                    <div className="image-container">
+                      <img src={hab.imagenes[0]} alt={hab.nombre} />
+                      <div className="servicios-overlay">
+                        {hab.servicios.map((s, i) => (
+                          <span key={i}>{s}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="card-content">
+                      <h3>{hab.nombre}</h3>
+                      <p>{hab.descripcion}</p>
+                      <p className="precio">${hab.precio} / noche</p>
+
+                      {disponible ? (
+                        <button onClick={() => handleSaberMas(hab)}>
+                          Saber más
+                        </button>
+                      ) : (
+                        <button className="btn-no-disponible" disabled>
+                          🚫 No disponible
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
+          )}
+
+          {/* ===== DETALLE ===== */}
+          {selectedRoom && (
+            <DetalleHabitacion
+              room={selectedRoom}
+              onVolver={handleCerrarDetalle}
+              onReservar={handleReservar}
+            />
+          )}
+
+          {/* ===== MODAL ===== */}
+          {showModal && (
+            <ModalReserva
+              room={selectedRoom}
+              formData={formData}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+              onCancelar={() => setShowModal(false)}
+              calcularNoches={calcularNoches}
+              confirmacion={confirmacion}
+            />
+          )}
         </div>
-      )}
-
-      {/* ===== DETALLE HABITACIÓN ===== */}
-      {selectedRoom && (
-  <div className="detalle-habitacion">
-    <button className="volver" onClick={handleCerrarDetalle}>
-      ← Volver
-    </button>
-
-    <div className="detalle-contenido">
-      {/* 🖼 Carrusel IZQUIERDA */}
-      <div className="detalle-imagenes">
-        <Slider
-          dots={true}
-          infinite={true}
-          speed={500}
-          slidesToShow={1}
-          slidesToScroll={1}
-          arrows={true}
-          adaptiveHeight={true}
-          swipeToSlide={true}
-        >
-          {selectedRoom.imagenes.map((img, i) => (
-            <div key={i} className="slide-item">
-              <img
-                src={img}
-                alt={`${selectedRoom.nombre}-${i}`}
-                className="detalle-img"
-              />
-            </div>
-          ))}
-        </Slider>
       </div>
-
-      {/* 📝 Info DERECHA */}
-      <div className="detalle-info">
-        <h3>{selectedRoom.nombre}</h3>
-        <p className="detalle-descripcion">{selectedRoom.detalles}</p>
-        <div className="detalle-servicios">
-          {selectedRoom.servicios.map((s, i) => (
-            <span key={i}>{s}</span>
-          ))}
-        </div>
-        <p className="detalle-precio">${selectedRoom.precio} / noche</p>
-        <button className="reservar-btn" onClick={handleReservar}>
-          Reservar ahora
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
-
-      {/* ===== MODAL DE RESERVA ===== */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h3>Reserva: {selectedRoom.nombre}</h3>
-            <form onSubmit={handleSubmit}>
-              <label>Nombre completo</label>
-              <input
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-              />
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <label>Fecha de entrada</label>
-              <input
-                type="date"
-                name="fechaEntrada"
-                value={formData.fechaEntrada}
-                onChange={handleChange}
-              />
-              <label>Fecha de salida</label>
-              <input
-                type="date"
-                name="fechaSalida"
-                value={formData.fechaSalida}
-                onChange={handleChange}
-              />
-              <p className="total">
-                Total estimado: ${calcularNoches() * selectedRoom.precio}
-              </p>
-              <div className="btn-group">
-                <button type="submit">Confirmar</button>
-                <button
-                  type="button"
-                  className="cancelar"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
-            {confirmacion && (
-              <p className="mensaje-confirmacion">{confirmacion}</p>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+    </Transicion>
   );
 }
