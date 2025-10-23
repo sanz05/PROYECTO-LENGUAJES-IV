@@ -25,7 +25,7 @@ export default function Servicio() {
     {
       id: "resto",
       img: restaurante,
-      title: '🍷 Restaurante "Costa Dorada"',
+      title: 'Restaurante "Costa Dorada"',
       desc: "Cocina californiana moderna, fusión de sabores locales y del mar.",
       long:
         "Menú de temporada con mariscos frescos, productos orgánicos de la zona y carta de vinos californianos. Opción vegetariana y sin gluten.",
@@ -38,7 +38,7 @@ export default function Servicio() {
     {
       id: "acusticas",
       img: acusticas,
-      title: "🎶 Noches acústicas bajo el cielo estrellado",
+      title: " Noches acústicas bajo el cielo estrellado",
       desc: "Relájate con música en vivo y la brisa de la costa.",
       long:
         "Sesiones íntimas al aire libre con artistas locales. Mantas, fogatitas controladas y barra de cócteles de autor.",
@@ -51,7 +51,7 @@ export default function Servicio() {
     {
       id: "bici",
       img: bicicletas,
-      title: "🚲 Recorridos en bicicleta por la costa",
+      title: " Recorridos en bicicleta por la costa",
       desc: "Explorá paisajes naturales y disfrutá la libertad del camino.",
       long:
         "Tours guiados de 8 km y 16 km con paradas fotográficas. Bicis urbanas y eléctricas disponibles, cascos incluidos.",
@@ -64,7 +64,7 @@ export default function Servicio() {
     {
       id: "yoga",
       img: yoga,
-      title: "🌴 Clases de yoga al amanecer",
+      title: " Clases de yoga al amanecer",
       desc: "Comenzá tu día con energía y conexión con la naturaleza.",
       long:
         "Vinyasa suave frente al mar, apto para todos los niveles. Se proveen mats, toallas y agua de coco.",
