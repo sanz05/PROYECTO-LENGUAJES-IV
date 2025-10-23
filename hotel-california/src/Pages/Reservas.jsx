@@ -9,6 +9,8 @@ import ModalReserva from "../components/ModalReservas/ModalReservas";
 import Transicion from "../components/Transiciones";
 import { supabase } from "../../sv/supabaseClient";
 
+
+
 export default function Reservas() {
   const [habitacionesDB, setHabitacionesDB] = useState([]); // 🧩 desde Supabase
   const [selectedRoom, setSelectedRoom] = useState(null);
@@ -100,9 +102,12 @@ export default function Reservas() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const noches = calcularNoches();
-    const hoy = new Date().setHours(0, 0, 0, 0);
-    const entrada = new Date(formData.fechaEntrada).setHours(0, 0, 0, 0);
-    const salida = new Date(formData.fechaSalida).setHours(0, 0, 0, 0);
+    //🧠 Normalizar fechas sin hora y sin desfase horario
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const entrada = new Date(formData.fechaEntrada + "T00:00:00");
+    const salida = new Date(formData.fechaSalida + "T00:00:00");
 
     if (!noches || !formData.fechaEntrada || !formData.fechaSalida) {
       setConfirmacion("⚠️ Completa todos los campos correctamente.");
@@ -129,53 +134,90 @@ export default function Reservas() {
 
 
     try {
-      const total = noches * selectedRoom.precio;
+  const total = noches * selectedRoom.precio;
 
-      // Obtener una habitación libre de ese tipo
-      const habDisponible = habitacionesDB.find(
-        (h) => h.tipo === selectedRoom.nombre && h.estado === "disponible"
+  // 🧭 Obtener todas las habitaciones de ese tipo
+  const habitacionesTipo = habitacionesDB.filter(
+    (h) => h.tipo === selectedRoom.nombre
+  );
+
+  let habitacionLibre = null;
+
+  // 🔍 Revisar cada habitación del tipo
+  for (const hab of habitacionesTipo) {
+    const { data: reservasExistentes, error: errorRes } = await supabase
+      .from("reservas")
+      .select("fecha_inicio, fecha_fin")
+      .eq("id_habitacion", hab.id_habitacion)
+      .neq("estado", "cancelada");
+
+    if (errorRes) throw errorRes;
+
+    const entradaNueva = new Date(formData.fechaEntrada);
+    const salidaNueva = new Date(formData.fechaSalida);
+
+    // Verificar si hay superposición
+    const haySolapamiento = reservasExistentes.some((r) => {
+      const inicio = new Date(r.fecha_inicio);
+      const fin = new Date(r.fecha_fin);
+      return (
+        (entradaNueva >= inicio && entradaNueva < fin) ||
+        (salidaNueva > inicio && salidaNueva <= fin) ||
+        (entradaNueva <= inicio && salidaNueva >= fin)
       );
+    });
 
-      if (!habDisponible) {
-        setConfirmacion("❌ No hay habitaciones disponibles de este tipo.");
-        return;
-      }
-
-      // Crear reserva
-      const { error: reservaError } = await supabase.from("reservas").insert([
-        {
-          id_usuario: usuario.id_usuario,
-          id_habitacion: habDisponible.id_habitacion,
-          fecha_inicio: formData.fechaEntrada,
-          fecha_fin: formData.fechaSalida,
-          total: total,
-          estado: "pendiente",
-          metodo_pago: "efectivo",
-        },
-      ]);
-
-      if (reservaError) throw reservaError;
-
-      // Actualizar estado en la BD
-      await supabase
-        .from("habitaciones")
-        .update({ estado: "ocupada" })
-        .eq("id_habitacion", habDisponible.id_habitacion);
-
-      setConfirmacion(
-        `✅ ¡Gracias ${usuario.nombre}! Has reservado una habitación ${selectedRoom.nombre} por ${noches} noche(s). Total: $${total}.`
-      );
-
-      setTimeout(() => {
-      setShowModal(false);
-      setConfirmacion("");
-      window.location.href = "/";
-      }, 2500);
-    } catch (error) {
-      console.error(error.message);
-      setConfirmacion(`❌ Error: ${error.message}`);
+    if (!haySolapamiento) {
+      habitacionLibre = hab;
+      break; // salimos del bucle al encontrar una disponible
     }
-  };
+  }
+
+  // 🚫 Si no hay ninguna libre, mensaje
+  if (!habitacionLibre) {
+    setConfirmacion("🚫 No hay habitaciones disponibles de este tipo en esas fechas.");
+    return;
+  }
+
+  // ✅ Crear la reserva con la habitación libre encontrada
+  const { error: reservaError } = await supabase.from("reservas").insert([
+    {
+      id_usuario: usuario.id_usuario,
+      id_habitacion: habitacionLibre.id_habitacion,
+      fecha_inicio: formData.fechaEntrada,
+      fecha_fin: formData.fechaSalida,
+      total: total,
+      estado: "pendiente",
+      metodo_pago: "efectivo",
+    },
+  ]);
+
+  if (reservaError) throw reservaError;
+
+  // 🏨 Marcar como ocupada solo si hoy cae dentro del rango
+  const hoy = new Date().toISOString().split("T")[0];
+  if (hoy >= formData.fechaEntrada && hoy <= formData.fechaSalida) {
+    await supabase
+      .from("habitaciones")
+      .update({ estado: "ocupada" })
+      .eq("id_habitacion", habitacionLibre.id_habitacion);
+  }
+
+  // 🎉 Mensaje de confirmación
+  setConfirmacion(
+    `✅ ¡Gracias ${usuario.nombre}! Has reservado una habitación ${selectedRoom.nombre} por ${noches} noche(s). Total: $${total}.`
+  );
+
+  setTimeout(() => {
+    setShowModal(false);
+    setConfirmacion("");
+    window.location.href = "/";
+  }, 2500);
+
+} catch (error) {
+  console.error(error.message);
+  setConfirmacion(`❌ Error: ${error.message}`);
+}}
 
   return (
     <Transicion>
@@ -203,16 +245,9 @@ export default function Reservas() {
                       <h3>{hab.nombre}</h3>
                       <p>{hab.descripcion}</p>
                       <p className="precio">${hab.precio} / noche</p>
-
-                      {disponible ? (
                         <button onClick={() => handleSaberMas(hab)}>
                           Saber más
                         </button>
-                      ) : (
-                        <button className="btn-no-disponible" disabled>
-                          🚫 No disponible
-                        </button>
-                      )}
                     </div>
                   </div>
                 );

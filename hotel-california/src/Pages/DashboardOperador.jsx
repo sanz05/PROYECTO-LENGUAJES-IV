@@ -7,9 +7,9 @@ export default function DashboardOperador() {
     <div className="dashboard-container">
       <h2>Panel del Operador</h2>
       <div className="dashboard-grid">
-        <Link to="/mapa-habitaciones" className="card">🛏️ Consultar Habitaciones (Mapa)</Link>
-        <Link to="/mail" className="card">📧 Responder Mail</Link>
-        <Link to="/consultar-reservas" className="card">📋 Consultar / Liberar Reservas</Link>
+        <Link to="/mapa-habitaciones" className="card"> Consultar Habitaciones (Mapa)</Link>
+        <Link to="/mail" className="card"> Responder Mail</Link>
+        <Link to="/consultar-reservas" className="card"> Consultar / Liberar Reservas</Link>
 
       </div>
     </div>

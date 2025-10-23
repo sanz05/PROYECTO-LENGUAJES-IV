@@ -114,19 +114,19 @@ export default function DashboardAdmin() {
       {/* OPCIONES PRINCIPALES */}
       <div className="dashboard-grid " id="admin-cards">
         <Link to="/mapa-habitaciones" className="card">
-          🗺️ Consultar Habitaciones (Mapa)
+           Consultar Habitaciones (Mapa)
         </Link>
 
         <Link to="/consultar-reservas" className="card">
-          📋 Consultar / Liberar Reservas
+           Consultar / Liberar Reservas
         </Link>
 
         <Link to="/admin/habitaciones" className="card">
-          🏨 Gestionar Habitaciones
+           Gestionar Habitaciones
         </Link>
 
         <Link to="/admin/operadores" className="card">
-          👥 Gestionar Operadores
+           Gestionar Operadores
         </Link>
 </div>
 
@@ -152,7 +152,7 @@ export default function DashboardAdmin() {
 
       {/* GRÁFICOS */}
       <div className="graficos-container">
-        <h3>📊 Estadísticas del Sistema</h3>
+        <h3> Estadísticas del Sistema</h3>
 
         <div className="graficos-grid">
           <div className="grafico">

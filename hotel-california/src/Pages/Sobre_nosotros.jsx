@@ -5,13 +5,13 @@ import sunsetImg from "../assets/sunset.png";
 import Transicion from "../components/Transiciones";
 import emailjs from "emailjs-com";
 
+
 export default function Sobre_nosotros() {
   // Estados del formulario
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  // 💌 Método para enviar el mail
   const enviarEmail = (e) => {
     e.preventDefault();
 
@@ -22,14 +22,14 @@ export default function Sobre_nosotros() {
 
     emailjs
       .send(
-        "service_fhv91a6", // ID del servicio de EmailJS
-        "template_x0h698h", // ID de la plantilla
+        "service_w4n7acv", 
+        "template_51ae1ub", 
         {
           name: nombre,
           email: correo,
           message: mensaje,
         },
-        "2ClqmuT9yTWubYfNJ" // tu clave pública
+        "f258dSXiwN1OkoneD" 
       )
       .then(() => {
         alert("✅ Mensaje enviado con éxito");
@@ -87,11 +87,11 @@ export default function Sobre_nosotros() {
               reconectar con vos mismo.
             </p>
             <ul>
-              <li>🌅 Spa con tratamientos naturales frente al mar</li>
-              <li>🍷 Restaurante “Golden Coast” con cocina californiana moderna</li>
-              <li>🎶 Noches acústicas bajo el cielo estrellado</li>
-              <li>🚲 Recorridos en bicicleta por la costa</li>
-              <li>🌴 Clases de yoga al amanecer</li>
+              <li> Spa con tratamientos naturales frente al mar</li>
+              <li> Restaurante “Golden Coast” con cocina californiana moderna</li>
+              <li> Noches acústicas bajo el cielo estrellado</li>
+              <li> Recorridos en bicicleta por la costa</li>
+              <li> Clases de yoga al amanecer</li>
             </ul>
           </div>
 
@@ -103,20 +103,8 @@ export default function Sobre_nosotros() {
         {/* ==== SECCIÓN DE CONTACTO ==== */}
         <div className="contact-section">
           <h3>Contacto</h3>
-          <p>📞 Teléfono: <a href="tel:+543875821274">3875821274</a></p>
-          <p>📧 Email: <a href="mailto:mailHotelcalifornia@gmail.com">mailHotelcalifornia@gmail.com</a></p>
-          <p>📍 Ubicación: California, Panther Beach</p>
-          <p>🕓 Atención: Lunes a Domingo, 8:00 a 22:00 hs</p>
 
-          <div className="social-links">
-            <a href="https://www.instagram.com/hotelcaliforniasj/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <span>·</span>
-            <a href="https://www.facebook.com/EaglesTributeHotelCalifornia" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <span>·</span>
-            <a href="https://wa.me/543875821274" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          </div>
-
-          {/* 📬 FORMULARIO DE CONTACTO */}
+          {/* FORMULARIO DE CONTACTO */}
           <form onSubmit={enviarEmail} style={{ marginTop: "30px" }}>
             <h4>Enviános un mensaje</h4>
             <input
@@ -141,8 +129,22 @@ export default function Sobre_nosotros() {
               required
             ></textarea>
 
-            <button type="submit">Enviar 📤</button>
+            <button type="submit">Enviar </button>
           </form>
+
+          <p>📞 Teléfono: <a href="tel:+543875821274">3875821274</a></p>
+          <p>📍 Ubicación: California, Panther Beach</p>
+          <p>🕓 Atención: Lunes a Domingo, 8:00 a 22:00 hs</p>
+
+          <div className="social-links">
+            <a href="https://www.instagram.com/hotelcaliforniasj/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <span>·</span>
+            <a href="https://www.facebook.com/EaglesTributeHotelCalifornia" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <span>·</span>
+            <a href="https://wa.me/543875821274" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          </div>
+
+          
         </div>
 
         {/* ==== FOOTER ==== */}
