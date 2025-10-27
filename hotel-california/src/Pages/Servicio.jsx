@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // si no usás router, ver nota abajo
+import { useNavigate } from "react-router-dom";
 import "../Styles/Servicio.css";
 import restaurante from "../assets/restaurante.png";
 import acusticas from "../assets/noche.png";
@@ -10,7 +10,7 @@ import Transicion from "../components/Transiciones";
 export default function Servicio() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
-  const navigate = useNavigate(); // si no tenés router, usa window.location.href = "/reservas"
+  const navigate = useNavigate();
 
   // Cerrar con ESC
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Servicio() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  // Datos con info extendida para el modal
+  // Datos de los servicios
   const serviciosData = [
     {
       id: "resto",
@@ -95,63 +95,83 @@ export default function Servicio() {
   };
 
   return (
-    <Transicion>
     <>
-      {/* ===== HERO ===== */}
-      <section className="servicios-hero">
-        <div className="overlay"></div>
-        <div className="servicios-content">
-          <h1>Servicios Exclusivos</h1>
-          <p>Experiencias únicas diseñadas para renovar cuerpo y alma</p>
-        </div>
-      </section>
-
-      {/* ===== GRID ===== */}
-      <section className="servicios">
-        <h2>Vive momentos inolvidables</h2>
-        <div className="servicios-grid">
-          {serviciosData.map((s) => (
-            <div
-              key={s.id}
-              className="servicio-card servicio-card--clickable"
-              onClick={() => handleOpen(s)}
-            >
-              <img src={s.img} alt={s.title} />
-              <h3>{s.title}</h3>
-              <p>{s.desc}</p>
+      {/* TODO EL CONTENIDO QUE ANIMA */}
+      <Transicion>
+        <>
+          {/* ===== HERO ===== */}
+          <section className="servicios-hero">
+            <div className="overlay"></div>
+            <div className="servicios-content">
+              <h1>Servicios Exclusivos</h1>
+              <p>Experiencias únicas diseñadas para renovar cuerpo y alma</p>
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
 
-      {/* ===== CTA ===== */}
-      <section className="cta">
-        <h2>¿Qué esperas para registrarte?</h2>
-        <button onClick={() => handleOpen(serviciosData[0])}>Registrarme</button>
-      </section>
+          {/* ===== GRID ===== */}
+          <section className="servicios">
+            <h2>Vive momentos inolvidables</h2>
+            <div className="servicios-grid">
+              {serviciosData.map((s) => (
+                <div
+                  key={s.id}
+                  className="servicio-card servicio-card--clickable"
+                  onClick={() => handleOpen(s)}
+                >
+                  <img src={s.img} alt={s.title} />
+                  <h3>{s.title}</h3>
+                  <p>{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
 
-      {/* ===== FOOTER ===== */}
-      <footer className="footer">
-        <p>© 2025 Hotel California. Todos los derechos reservados.</p>
-        <p>Santa Cruz, California — Estados Unidos</p>
-      </footer>
+          {/* ===== CTA ===== */}
+          <section className="cta">
+            <h2>¿Qué esperas para registrarte?</h2>
+            <button onClick={() => handleOpen(serviciosData[0])}>
+              Registrarme
+            </button>
+          </section>
 
-      {/* ===== MODAL ===== */}
+          {/* ===== FOOTER ===== */}
+          <footer className="footer">
+            <p>© 2025 Hotel California. Todos los derechos reservados.</p>
+            <p>Santa Cruz, California — Estados Unidos</p>
+          </footer>
+        </>
+      </Transicion>
+
+      {/* 👇 EL MODAL VA FUERA DEL <Transicion> */}
       {open && selected && (
         <div
           className="modal-overlay"
-          onMouseDown={(e) =>
-            e.target.classList.contains("modal-overlay") && handleClose()
-          }
+          onMouseDown={(e) => {
+            if (e.target.classList.contains("modal-overlay")) {
+              handleClose();
+            }
+          }}
           role="dialog"
           aria-modal="true"
         >
-          <div className="modal-card" onMouseDown={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={handleClose} aria-label="Cerrar">
+          <div
+            className="modal-card"
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              onClick={handleClose}
+              aria-label="Cerrar"
+            >
               ×
             </button>
 
-            <img className="modal-img" src={selected.img} alt={selected.title} />
+            <img
+              className="modal-img"
+              src={selected.img}
+              alt={selected.title}
+            />
+
             <div className="modal-content">
               <h3 className="modal-title">{selected.title}</h3>
               <p className="modal-desc">{selected.long}</p>
@@ -177,8 +197,5 @@ export default function Servicio() {
         </div>
       )}
     </>
-    </Transicion>
-  );
+);
 }
-
-
