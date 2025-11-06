@@ -9,6 +9,14 @@ export default function CRUDHabitaciones() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const navigate = useNavigate();
 
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  const volverDashboard = () => {
+    if (usuario?.rol === "admin") navigate("/dashboard-admin");
+    else if (usuario?.rol === "op") navigate("/dashboard-operador");
+    else navigate("/");
+  };
+
   const [nuevaHab, setNuevaHab] = useState({
     num_hab: "",
     tipo: "",
@@ -27,7 +35,7 @@ export default function CRUDHabitaciones() {
     else setHabitaciones(data);
   };
 
-  // 🧠 if para autocompletar según tipo
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -108,12 +116,9 @@ export default function CRUDHabitaciones() {
       <div className="crud-header">
         <h2>Gestión de Habitaciones</h2>
         <div className="header-buttons">
-          <button
-            className="btn-volver"
-            onClick={() => navigate("/dashboard-admin")}
-          >
-            ← Volver al Dashboard
-          </button>
+          <button className="btn-volver" onClick={volverDashboard}>
+          ← Volver al Dashboard
+        </button>
           <button
             className="btn-agregar"
             onClick={() => setMostrarFormulario(!mostrarFormulario)}

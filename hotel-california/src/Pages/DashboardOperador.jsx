@@ -8,7 +8,12 @@ export default function DashboardOperador() {
       <h2>Panel del Operador</h2>
       <div className="dashboard-grid">
         <Link to="/mapa-habitaciones" className="card"> Consultar Habitaciones (Mapa)</Link>
-        <Link to="/mail" className="card"> Responder Mail</Link>
+        <button
+          onClick={() => window.open("https://mail.google.com/mail/u/0/#inbox", "_blank")}
+          className="card">
+            Abrir Gmail
+        </button>
+
         <Link to="/consultar-reservas" className="card"> Consultar / Liberar Reservas</Link>
 
       </div>

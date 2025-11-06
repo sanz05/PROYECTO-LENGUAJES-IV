@@ -4,6 +4,7 @@ import lobbyImg from "../assets/lobby.png";
 import sunsetImg from "../assets/sunset.png";
 import Transicion from "../components/Transiciones";
 import emailjs from "emailjs-com";
+import { resize } from "framer-motion";
 
 
 export default function Sobre_nosotros() {
@@ -22,14 +23,14 @@ export default function Sobre_nosotros() {
 
     emailjs
       .send(
-        "service_w4n7acv", 
-        "template_51ae1ub", 
+        "service_ols5u9r", 
+        "template_dqaig8d", 
         {
           name: nombre,
           email: correo,
           message: mensaje,
         },
-        "f258dSXiwN1OkoneD" 
+        "OGLFcOhvnbJC10ibe" 
       )
       .then(() => {
         alert("✅ Mensaje enviado con éxito");
@@ -101,51 +102,52 @@ export default function Sobre_nosotros() {
         </div>
 
         {/* ==== SECCIÓN DE CONTACTO ==== */}
-        <div className="contact-section">
-          <h3>Contacto</h3>
+<div className="contact-section">
+  <h3>Contacto</h3>
 
-          {/* FORMULARIO DE CONTACTO */}
-          <form onSubmit={enviarEmail} style={{ marginTop: "30px" }}>
-            <h4>Enviános un mensaje</h4>
-            <input
-              type="text"
-              placeholder="Tu nombre"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              required
-            />
-            <input
-              type="email"
-              placeholder="Tu correo"
-              value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
-              required
-            />
-            <textarea
-              placeholder="Escribí tu mensaje..."
-              rows="5"
-              value={mensaje}
-              onChange={(e) => setMensaje(e.target.value)}
-              required
-            ></textarea>
+  <form className="contact-form" onSubmit={enviarEmail}>
+    <h4>Enviános un mensaje</h4>
 
-            <button type="submit">Enviar </button>
-          </form>
+    <input
+      type="text"
+      placeholder="Tu nombre"
+      value={nombre}
+      onChange={(e) => setNombre(e.target.value)}
+      required
+    />
+    <input
+      type="email"
+      placeholder="Tu correo"
+      value={correo}
+      onChange={(e) => setCorreo(e.target.value)}
+      required
+    />
+    <textarea
+      placeholder="Escribí tu mensaje..."
+      rows="5"
+      value={mensaje}
+      onChange={(e) => setMensaje(e.target.value)}
+      required
+    ></textarea>
 
-          <p>📞 Teléfono: <a href="tel:+543875821274">3875821274</a></p>
-          <p>📍 Ubicación: California, Panther Beach</p>
-          <p>🕓 Atención: Lunes a Domingo, 8:00 a 22:00 hs</p>
+    <button type="submit">Enviar</button>
+  </form>
 
-          <div className="social-links">
-            <a href="https://www.instagram.com/hotelcaliforniasj/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <span>·</span>
-            <a href="https://www.facebook.com/EaglesTributeHotelCalifornia" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <span>·</span>
-            <a href="https://wa.me/543875821274" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          </div>
+  <div className="contact-info">
+    <p>📞 Teléfono: <a href="tel:+543875821274">3875821274</a></p>
+    <p>📍 Ubicación: California, Panther Beach</p>
+    <p>🕓 Atención: Lunes a Domingo, 8:00 a 22:00 hs</p>
+  </div>
 
-          
-        </div>
+  <div className="social-links">
+    <a href="https://www.instagram.com/hotelcaliforniasj/" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <span>·</span>
+    <a href="https://www.facebook.com/EaglesTributeHotelCalifornia" target="_blank" rel="noopener noreferrer">Facebook</a>
+    <span>·</span>
+    <a href="https://wa.me/543875821274" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+  </div>
+</div>
+
 
         {/* ==== FOOTER ==== */}
         <footer className="footerss">

@@ -71,7 +71,7 @@ export default function Reservas() {
 }, []);
 
 
-  // 📊 Chequear disponibilidad por tipo
+  // Chequear disponibilidad por tipo
   const estaDisponible = (tipo) => {
     const delTipo = habitacionesDB.filter((h) => h.tipo === tipo);
     return delTipo.some((h) => h.estado === "disponible");
@@ -205,7 +205,7 @@ export default function Reservas() {
 
   // 🎉 Mensaje de confirmación
   setConfirmacion(
-    `✅ ¡Gracias ${usuario.nombre}! Has reservado una habitación ${selectedRoom.nombre} por ${noches} noche(s). Total: $${total}.`
+    `✅ ¡Gracias ${usuario.nombre}! Has reservado una habitación ${selectedRoom.nombre} por ${noches} noche(s). Total: US$${total}.`
   );
 
   setTimeout(() => {
@@ -244,7 +244,7 @@ export default function Reservas() {
                     <div className="card-content">
                       <h3>{hab.nombre}</h3>
                       <p>{hab.descripcion}</p>
-                      <p className="precio">${hab.precio} / noche</p>
+                      <p className="precio">US${hab.precio} / noche</p>
                         <button onClick={() => handleSaberMas(hab)}>
                           Saber más
                         </button>

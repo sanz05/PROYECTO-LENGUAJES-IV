@@ -55,9 +55,10 @@ export default function ModalReserva({
           />
 
 
-          <p className="total">
-            Total estimado: ${calcularNoches() * room.precio}
-          </p>
+          <div className="total-estimado">
+            <span>Total estimado:</span> 
+            <strong>${calcularNoches() * room.precio}</strong>
+          </div>
 
           <div className="btn-group">
             <button type="submit">Confirmar</button>

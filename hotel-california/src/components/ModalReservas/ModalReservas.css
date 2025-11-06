@@ -16,6 +16,7 @@
 
 /* Caja principal del modal */
 .modal-box {
+  margin-top: 240px;
   background: rgba(13, 1, 6, 0.75);
   border: 1px solid rgba(159, 120, 51, 0.3);
   border-radius: 12px;
@@ -95,4 +96,40 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1) brightness(2); /* lo vuelve blanco y brillante */
   opacity: 0.9;
   cursor: pointer;
+}
+
+/* ===== TOTAL ESTIMADO ===== */
+.total-estimado {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #1c1c1c, #282828);
+  border: 1px solid #f1d28a;
+  border-radius: 10px;
+  color: #f8f8f8;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 0 10px rgba(241, 210, 138, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.total-estimado:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(241, 210, 138, 0.6);
+}
+
+.total-estimado span {
+  display: block;
+  font-size: 1rem;
+  color: #d6c89f;
+  letter-spacing: 0.5px;
+}
+
+.total-estimado strong {
+  display: block;
+  font-size: 1.6rem;
+  color: #f1d28a;
+  margin-top: 0.3rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }

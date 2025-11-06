@@ -113,3 +113,139 @@
   background-color: #9f7833;
   color: #1a1423;
 }
+
+/* ====== ACCIONES EN LA TABLA ====== */
+.crud-tabla td.acciones {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Botones de acción individuales */
+.crud-tabla .acciones button {
+  background-color: transparent;
+  color: #f1d28a; /* dorado */
+  border: 1px solid #f1d28a;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.25s ease;
+}
+
+.crud-tabla .acciones button:hover {
+  background-color: #f1d28a;
+  color: #1a0f0f; /* marrón oscuro */
+  transform: translateY(-2px);
+}
+
+/* Íconos ligeramente más destacados */
+.crud-tabla .acciones button svg,
+.crud-tabla .acciones button::before {
+  font-size: 1rem;
+}
+
+/* Diferenciamos cada acción con colores suaves */
+.crud-tabla .acciones button:nth-child(1) {
+  border-color: #f1d28a; /* editar */
+}
+.crud-tabla .acciones button:nth-child(2) {
+  border-color: #f1c25a; /* cambiar contraseña */
+}
+.crud-tabla .acciones button:nth-child(3) {
+  border-color: #f16363; /* eliminar */
+  color: #f16363;
+}
+.crud-tabla .acciones button:nth-child(3):hover {
+  background-color: #f16363;
+  color: #fff;
+}
+
+/* ===== MODAL DE CONTRASEÑA ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 0, 3, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background-color: #1a0f0f;
+  border: 1px solid #f1d28a;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 350px;
+  max-width: 90%;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(241, 210, 138, 0.2);
+}
+
+.modal-box h3 {
+  color: #f1d28a;
+  margin-bottom: 1rem;
+}
+
+.modal-box input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #f1d28a;
+  margin: 1rem 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-guardar,
+.btn-cancelar {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.btn-guardar {
+  background-color: #f1d28a;
+  color: #1a0f0f;
+}
+
+.btn-cancelar {
+  background-color: #2e1d1d;
+  color: #f1d28a;
+  border: 1px solid #f1d28a;
+}
+
+.btn-cancelar:hover {
+  background-color: #f1d28a;
+  color: #1a0f0f;
+}
+
+/* Centrar columna de Acciones (header y celdas) */
+.crud-tabla th:nth-last-child(1),
+.crud-tabla td.acciones {
+  text-align: center;
+}
+
+/* Asegurar ancho constante */
+.crud-tabla th:nth-last-child(1) {
+  width: 260px; /* podés ajustar si tenés más botones */
+}

@@ -5,11 +5,26 @@ import { useNavigate } from "react-router-dom";
 
 export default function ConsultarReservas() {
   const [reservas, setReservas] = useState([]);
+  const [ocultas, setOcultas] = useState([]); // 👈 nuevas
+
   const navigate = useNavigate();
 
   useEffect(() => {
     obtenerReservas();
+    const guardadas = JSON.parse(localStorage.getItem("reservasOcultas")) || [];
+    setOcultas(guardadas);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("reservasOcultas", JSON.stringify(ocultas));
+  }, [ocultas]);
+
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const volverDashboard = () => {
+    if (usuario?.rol === "admin") navigate("/dashboard-admin");
+    else if (usuario?.rol === "op") navigate("/dashboard-operador");
+    else navigate("/");
+  };
 
   const obtenerReservas = async () => {
     const { data, error } = await supabase
@@ -59,8 +74,9 @@ export default function ConsultarReservas() {
     obtenerReservas();
   };
 
-  // ✅ “Eliminar” solo la quita del estado local, sin borrar de Supabase
-  const eliminarReservaVisual = (id_reserva) => {
+  // 👇 nuevo: ocultar visualmente y guardar en localStorage
+  const ocultarReserva = (id_reserva) => {
+    setOcultas((prev) => [...prev, id_reserva]);
     setReservas((prev) => prev.filter((r) => r.id_reserva !== id_reserva));
   };
 
@@ -68,10 +84,7 @@ export default function ConsultarReservas() {
     <div className="reservas-container">
       <div className="reservas-header">
         <h2>Consultar y Liberar Reservas</h2>
-        <button
-          className="btn-volver"
-          onClick={() => navigate("/dashboard-operador")}
-        >
+        <button className="btn-volver" onClick={volverDashboard}>
           ← Volver al Dashboard
         </button>
       </div>
@@ -91,37 +104,55 @@ export default function ConsultarReservas() {
           </tr>
         </thead>
         <tbody>
-          {reservas.map((reserva) => (
-            <tr key={reserva.id_reserva}>
-              <td>{reserva.id_reserva}</td>
-              <td>
-                {reserva.usuarios
-                  ? `${reserva.usuarios.nombre} ${reserva.usuarios.apellido}`
-                  : "—"}
-              </td>
-              <td>{reserva.habitaciones?.num_hab}</td>
-              <td>{reserva.habitaciones?.tipo}</td>
-              <td>{reserva.fecha_inicio}</td>
-              <td>{reserva.fecha_fin}</td>
-              <td>${reserva.total}</td>
-              <td className={`estado ${reserva.estado.toLowerCase()}`}>
-                {reserva.estado}
-              </td>
-              <td>
-                {reserva.estado === "pendiente" && (
-                  <>
-                    <button
-                      className="btn confirmar"
-                      onClick={() =>
-                        actualizarEstado(
-                          reserva.id_reserva,
-                          "confirmada",
-                          reserva.id_habitacion
-                        )
-                      }
-                    >
-                      ✅ Aprobar
-                    </button>
+          {reservas
+            .filter((r) => !ocultas.includes(r.id_reserva)) // 👈 filtro
+            .map((reserva) => (
+              <tr key={reserva.id_reserva}>
+                <td>{reserva.id_reserva}</td>
+                <td>
+                  {reserva.usuarios
+                    ? `${reserva.usuarios.nombre} ${reserva.usuarios.apellido}`
+                    : "—"}
+                </td>
+                <td>{reserva.habitaciones?.num_hab}</td>
+                <td>{reserva.habitaciones?.tipo}</td>
+                <td>{reserva.fecha_inicio}</td>
+                <td>{reserva.fecha_fin}</td>
+                <td>${reserva.total}</td>
+                <td className={`estado ${reserva.estado.toLowerCase()}`}>
+                  {reserva.estado}
+                </td>
+                <td>
+                  {reserva.estado === "pendiente" && (
+                    <>
+                      <button
+                        className="btn confirmar"
+                        onClick={() =>
+                          actualizarEstado(
+                            reserva.id_reserva,
+                            "confirmada",
+                            reserva.id_habitacion
+                          )
+                        }
+                      >
+                        ✅ Aprobar
+                      </button>
+                      <button
+                        className="btn liberar"
+                        onClick={() =>
+                          actualizarEstado(
+                            reserva.id_reserva,
+                            "cancelada",
+                            reserva.id_habitacion
+                          )
+                        }
+                      >
+                        ❌ Liberar
+                      </button>
+                    </>
+                  )}
+
+                  {reserva.estado === "confirmada" && (
                     <button
                       className="btn liberar"
                       onClick={() =>
@@ -132,37 +163,21 @@ export default function ConsultarReservas() {
                         )
                       }
                     >
-                      ❌ Liberar
+                      🗑️ Dar de baja
                     </button>
-                  </>
-                )}
+                  )}
 
-                {reserva.estado === "confirmada" && (
-                  <button
-                    className="btn liberar"
-                    onClick={() =>
-                      actualizarEstado(
-                        reserva.id_reserva,
-                        "cancelada",
-                        reserva.id_habitacion
-                      )
-                    }
-                  >
-                    🗑️ Dar de baja
-                  </button>
-                )}
-
-                {reserva.estado === "cancelada" && (
-                  <button
-                    className="btn eliminar"
-                    onClick={() => eliminarReservaVisual(reserva.id_reserva)}
-                  >
-                    🧹 Ocultar
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
+                  {reserva.estado === "cancelada" && (
+                    <button
+                      className="btn eliminar"
+                      onClick={() => ocultarReserva(reserva.id_reserva)} // 👈 ahora usa la función nueva
+                    >
+                      🧹 Ocultar
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
