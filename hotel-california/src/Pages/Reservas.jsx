@@ -26,7 +26,7 @@ export default function Reservas() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const isLoggedIn = !!usuario;
 
-  // 🧭 Traer habitaciones reales desde Supabase
+  // Traer habitaciones reales desde Supabase
   useEffect(() => {
   const fetchHabitaciones = async () => {
     try {
@@ -102,7 +102,7 @@ export default function Reservas() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const noches = calcularNoches();
-    //🧠 Normalizar fechas sin hora y sin desfase horario
+    //Normalizar fechas sin hora y sin desfase horario
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
@@ -119,7 +119,7 @@ export default function Reservas() {
       return;
     }
 
-    // 🚫 Validación de fechas inválidas
+    // Validación de fechas inválidas
 
 
     if (entrada < hoy) {
@@ -136,14 +136,14 @@ export default function Reservas() {
     try {
   const total = noches * selectedRoom.precio;
 
-  // 🧭 Obtener todas las habitaciones de ese tipo
+  //Obtener todas las habitaciones de ese tipo
   const habitacionesTipo = habitacionesDB.filter(
     (h) => h.tipo === selectedRoom.nombre
   );
 
   let habitacionLibre = null;
 
-  // 🔍 Revisar cada habitación del tipo
+  // Revisar cada habitación del tipo
   for (const hab of habitacionesTipo) {
     const { data: reservasExistentes, error: errorRes } = await supabase
       .from("reservas")

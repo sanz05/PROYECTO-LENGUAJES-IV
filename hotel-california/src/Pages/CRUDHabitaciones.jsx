@@ -134,7 +134,7 @@ export default function CRUDHabitaciones() {
           <h3>Nueva habitación</h3>
 
           <input
-            type="text"
+            type="number"
             name="num_hab"
             placeholder="Número"
             value={nuevaHab.num_hab}
